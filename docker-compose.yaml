@@ -1,0 +1,31 @@
+version: '3.9'
+
+services:
+  # PaperMC
+  paper:
+    image: ghcr.io/northwestjp/paper-docker:master
+    restart: always
+    container_name: papermc
+    ports:
+      - 25565:25565
+    stdin_open: true
+    environment:
+      JAVA_TOOL_OPTIONS: "-Xms1G -Xmx2G"
+    volumes:
+      - ./paper:/app
+
+  # cloudflared
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    user: root
+    restart: unless-stopped
+    command: tunnel --url tcp://paper:25565 --no-chunked-encoding run mc.northwest.jp
+    volumes:
+      - '/root/.cloudflared:/root/.cloudflared'
+
+# server side
+# tcp -> http
+
+# client side
+# http -> tcp
+# > cloudflared access tcp --hostname mc.northwest.jp --url localhost:25565
