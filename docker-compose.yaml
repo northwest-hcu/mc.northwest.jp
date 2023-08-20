@@ -3,7 +3,7 @@ version: '3.9'
 services:
   # PaperMC
   paper:
-    image: ghcr.io/northwestjp/paper-docker:master
+    image: ghcr.io/yudejp/paper-docker:master
     restart: always
     container_name: papermc
     ports:
